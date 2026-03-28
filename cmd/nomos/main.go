@@ -1,7 +1,22 @@
 package main
 
-import "fmt"
+import (
+	"context"
+	"log"
+	"os"
+	"os/signal"
+
+	"github.com/ryota-sakamoto/nomos/internal/node"
+)
 
 func main() {
-	fmt.Println("nomos")
+	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
+	defer stop()
+
+	n := node.Node{}
+	if err := n.Run(ctx); err != nil {
+		panic(err)
+	}
+
+	log.Println("stopped")
 }
