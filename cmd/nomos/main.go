@@ -13,8 +13,7 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
 	defer stop()
 
-	n := node.Node{}
-	if err := n.Run(ctx); err != nil {
+	if err := node.Run(ctx); err != nil {
 		panic(err)
 	}
 
