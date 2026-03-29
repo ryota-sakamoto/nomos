@@ -38,7 +38,7 @@ func Run(ctx context.Context) error {
 	go func() {
 		log.Println("listen and serve")
 		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
-			log.Println("failed to run server: %v", err)
+			log.Printf("failed to run server: %v\n", err)
 		}
 	}()
 
