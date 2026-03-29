@@ -1,0 +1,38 @@
+name: CI
+
+on: [push]
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v5
+
+    - name: Setup Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: 'go.mod'
+        cache: true
+
+    - name: Setup Buf
+      uses: bufbuild/buf-setup-action@v1
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Buf Lint
+      uses: bufbuild/buf-lint-action@v1
+
+    - name: Verify Generated Code
+      run: |
+        buf generate
+        go mod tidy
+        git diff --exit-code
+
+    - name: Run tests
+      run: go test -v ./...
+
+    - name: Run build
+      run: go build -v cmd/nomos/main.go
