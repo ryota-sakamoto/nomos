@@ -3,16 +3,16 @@ module github.com/ryota-sakamoto/nomos
 go 1.25.6
 
 require (
+	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1
 	connectrpc.com/connect v1.19.1
+	connectrpc.com/validate v0.6.0
 	golang.org/x/net v0.52.0
 	google.golang.org/protobuf v1.36.11
 )
 
 require (
-	buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go v1.36.9-20250912141014-52f32327d4b0.1 // indirect
 	buf.build/go/protovalidate v1.0.0 // indirect
 	cel.dev/expr v0.24.0 // indirect
-	connectrpc.com/validate v0.6.0 // indirect
 	github.com/antlr4-go/antlr/v4 v4.13.1 // indirect
 	github.com/google/cel-go v0.26.1 // indirect
 	github.com/stoewer/go-strcase v1.3.1 // indirect
