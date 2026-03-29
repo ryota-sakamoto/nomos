@@ -9,6 +9,7 @@ import (
 	"sync"
 
 	"connectrpc.com/connect"
+	"connectrpc.com/validate"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
@@ -24,7 +25,9 @@ type Node struct {
 func Run(ctx context.Context) error {
 	mux := http.NewServeMux()
 
-	path, handler := nomosv1connect.NewNomosServiceHandler(&Node{})
+	validator := validate.NewInterceptor()
+
+	path, handler := nomosv1connect.NewNomosServiceHandler(&Node{}, connect.WithInterceptors(validator))
 	mux.Handle(path, handler)
 
 	server := &http.Server{

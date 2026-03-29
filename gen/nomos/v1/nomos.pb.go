@@ -7,6 +7,7 @@
 package nomosv1
 
 import (
+	_ "buf.build/gen/go/bufbuild/protovalidate/protocolbuffers/go/buf/validate"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
@@ -201,9 +202,9 @@ var File_nomos_v1_nomos_proto protoreflect.FileDescriptor
 
 const file_nomos_v1_nomos_proto_rawDesc = "" +
 	"\n" +
-	"\x14nomos/v1/nomos.proto\x12\bnomos.v1\"\"\n" +
-	"\x0eGetItemRequest\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\"'\n" +
+	"\x14nomos/v1/nomos.proto\x12\bnomos.v1\x1a\x1bbuf/validate/validate.proto\"+\n" +
+	"\x0eGetItemRequest\x12\x19\n" +
+	"\x03key\x18\x01 \x01(\tB\a\xbaH\x04r\x02\x10\x01R\x03key\"'\n" +
 	"\x0fGetItemResponse\x12\x14\n" +
 	"\x05value\x18\x01 \x01(\tR\x05value\"8\n" +
 	"\x0ePutItemRequest\x12\x10\n" +
