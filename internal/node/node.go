@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"sync"
 
+	"connectrpc.com/connect"
 	"golang.org/x/net/http2"
 	"golang.org/x/net/http2/h2c"
 
@@ -43,9 +44,12 @@ func Run(ctx context.Context) error {
 	return server.Shutdown(ctx)
 }
 
-func (*Node) Ping(ctx context.Context, req *nomosv1.PingRequest) (*nomosv1.PingResponse, error) {
-	log.Println("receive ping", req.Name)
-	return &nomosv1.PingResponse{
-		Message: fmt.Sprintf("hi %s", req.Name),
-	}, nil
+func (n *Node) GetItem(ctx context.Context, req *nomosv1.GetItemRequest) (*nomosv1.GetItemResponse, error) {
+	log.Println("receive GetItem", req)
+	return &nomosv1.GetItemResponse{}, connect.NewError(connect.CodeNotFound, fmt.Errorf("item is not found"))
+}
+
+func (n *Node) PutItem(ctx context.Context, req *nomosv1.PutItemRequest) (*nomosv1.PutItemResponse, error) {
+	log.Println("receive PutItem", req)
+	return &nomosv1.PutItemResponse{}, nil
 }

@@ -2,14 +2,22 @@ syntax = "proto3";
 
 package nomos.v1;
 
-message PingRequest {
-  string name = 1;
+message GetItemRequest {
+  string key = 1;
 }
 
-message PingResponse {
-  string message = 1;
+message GetItemResponse {
+  string value = 1;
 }
+
+message PutItemRequest {
+  string key = 1;
+  string value = 2;
+}
+
+message PutItemResponse {}
 
 service NomosService {
-  rpc Ping(PingRequest) returns (PingResponse) {}
+  rpc GetItem(GetItemRequest) returns (GetItemResponse) {}
+  rpc PutItem(PutItemRequest) returns (PutItemResponse) {}
 }

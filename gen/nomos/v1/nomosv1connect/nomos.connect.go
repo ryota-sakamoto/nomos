@@ -33,13 +33,16 @@ const (
 // reflection-formatted method names, remove the leading slash and convert the remaining slash to a
 // period.
 const (
-	// NomosServicePingProcedure is the fully-qualified name of the NomosService's Ping RPC.
-	NomosServicePingProcedure = "/nomos.v1.NomosService/Ping"
+	// NomosServiceGetItemProcedure is the fully-qualified name of the NomosService's GetItem RPC.
+	NomosServiceGetItemProcedure = "/nomos.v1.NomosService/GetItem"
+	// NomosServicePutItemProcedure is the fully-qualified name of the NomosService's PutItem RPC.
+	NomosServicePutItemProcedure = "/nomos.v1.NomosService/PutItem"
 )
 
 // NomosServiceClient is a client for the nomos.v1.NomosService service.
 type NomosServiceClient interface {
-	Ping(context.Context, *v1.PingRequest) (*v1.PingResponse, error)
+	GetItem(context.Context, *v1.GetItemRequest) (*v1.GetItemResponse, error)
+	PutItem(context.Context, *v1.PutItemRequest) (*v1.PutItemResponse, error)
 }
 
 // NewNomosServiceClient constructs a client for the nomos.v1.NomosService service. By default, it
@@ -53,10 +56,16 @@ func NewNomosServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 	baseURL = strings.TrimRight(baseURL, "/")
 	nomosServiceMethods := v1.File_nomos_v1_nomos_proto.Services().ByName("NomosService").Methods()
 	return &nomosServiceClient{
-		ping: connect.NewClient[v1.PingRequest, v1.PingResponse](
+		getItem: connect.NewClient[v1.GetItemRequest, v1.GetItemResponse](
 			httpClient,
-			baseURL+NomosServicePingProcedure,
-			connect.WithSchema(nomosServiceMethods.ByName("Ping")),
+			baseURL+NomosServiceGetItemProcedure,
+			connect.WithSchema(nomosServiceMethods.ByName("GetItem")),
+			connect.WithClientOptions(opts...),
+		),
+		putItem: connect.NewClient[v1.PutItemRequest, v1.PutItemResponse](
+			httpClient,
+			baseURL+NomosServicePutItemProcedure,
+			connect.WithSchema(nomosServiceMethods.ByName("PutItem")),
 			connect.WithClientOptions(opts...),
 		),
 	}
@@ -64,12 +73,22 @@ func NewNomosServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 
 // nomosServiceClient implements NomosServiceClient.
 type nomosServiceClient struct {
-	ping *connect.Client[v1.PingRequest, v1.PingResponse]
+	getItem *connect.Client[v1.GetItemRequest, v1.GetItemResponse]
+	putItem *connect.Client[v1.PutItemRequest, v1.PutItemResponse]
 }
 
-// Ping calls nomos.v1.NomosService.Ping.
-func (c *nomosServiceClient) Ping(ctx context.Context, req *v1.PingRequest) (*v1.PingResponse, error) {
-	response, err := c.ping.CallUnary(ctx, connect.NewRequest(req))
+// GetItem calls nomos.v1.NomosService.GetItem.
+func (c *nomosServiceClient) GetItem(ctx context.Context, req *v1.GetItemRequest) (*v1.GetItemResponse, error) {
+	response, err := c.getItem.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
+}
+
+// PutItem calls nomos.v1.NomosService.PutItem.
+func (c *nomosServiceClient) PutItem(ctx context.Context, req *v1.PutItemRequest) (*v1.PutItemResponse, error) {
+	response, err := c.putItem.CallUnary(ctx, connect.NewRequest(req))
 	if response != nil {
 		return response.Msg, err
 	}
@@ -78,7 +97,8 @@ func (c *nomosServiceClient) Ping(ctx context.Context, req *v1.PingRequest) (*v1
 
 // NomosServiceHandler is an implementation of the nomos.v1.NomosService service.
 type NomosServiceHandler interface {
-	Ping(context.Context, *v1.PingRequest) (*v1.PingResponse, error)
+	GetItem(context.Context, *v1.GetItemRequest) (*v1.GetItemResponse, error)
+	PutItem(context.Context, *v1.PutItemRequest) (*v1.PutItemResponse, error)
 }
 
 // NewNomosServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -88,16 +108,24 @@ type NomosServiceHandler interface {
 // and JSON codecs. They also support gzip compression.
 func NewNomosServiceHandler(svc NomosServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
 	nomosServiceMethods := v1.File_nomos_v1_nomos_proto.Services().ByName("NomosService").Methods()
-	nomosServicePingHandler := connect.NewUnaryHandlerSimple(
-		NomosServicePingProcedure,
-		svc.Ping,
-		connect.WithSchema(nomosServiceMethods.ByName("Ping")),
+	nomosServiceGetItemHandler := connect.NewUnaryHandlerSimple(
+		NomosServiceGetItemProcedure,
+		svc.GetItem,
+		connect.WithSchema(nomosServiceMethods.ByName("GetItem")),
+		connect.WithHandlerOptions(opts...),
+	)
+	nomosServicePutItemHandler := connect.NewUnaryHandlerSimple(
+		NomosServicePutItemProcedure,
+		svc.PutItem,
+		connect.WithSchema(nomosServiceMethods.ByName("PutItem")),
 		connect.WithHandlerOptions(opts...),
 	)
 	return "/nomos.v1.NomosService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
-		case NomosServicePingProcedure:
-			nomosServicePingHandler.ServeHTTP(w, r)
+		case NomosServiceGetItemProcedure:
+			nomosServiceGetItemHandler.ServeHTTP(w, r)
+		case NomosServicePutItemProcedure:
+			nomosServicePutItemHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -107,6 +135,10 @@ func NewNomosServiceHandler(svc NomosServiceHandler, opts ...connect.HandlerOpti
 // UnimplementedNomosServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedNomosServiceHandler struct{}
 
-func (UnimplementedNomosServiceHandler) Ping(context.Context, *v1.PingRequest) (*v1.PingResponse, error) {
-	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("nomos.v1.NomosService.Ping is not implemented"))
+func (UnimplementedNomosServiceHandler) GetItem(context.Context, *v1.GetItemRequest) (*v1.GetItemResponse, error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("nomos.v1.NomosService.GetItem is not implemented"))
+}
+
+func (UnimplementedNomosServiceHandler) PutItem(context.Context, *v1.PutItemRequest) (*v1.PutItemResponse, error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("nomos.v1.NomosService.PutItem is not implemented"))
 }

@@ -21,27 +21,27 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
-type PingRequest struct {
+type GetItemRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PingRequest) Reset() {
-	*x = PingRequest{}
+func (x *GetItemRequest) Reset() {
+	*x = GetItemRequest{}
 	mi := &file_nomos_v1_nomos_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PingRequest) String() string {
+func (x *GetItemRequest) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PingRequest) ProtoMessage() {}
+func (*GetItemRequest) ProtoMessage() {}
 
-func (x *PingRequest) ProtoReflect() protoreflect.Message {
+func (x *GetItemRequest) ProtoReflect() protoreflect.Message {
 	mi := &file_nomos_v1_nomos_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -53,39 +53,39 @@ func (x *PingRequest) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PingRequest.ProtoReflect.Descriptor instead.
-func (*PingRequest) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetItemRequest.ProtoReflect.Descriptor instead.
+func (*GetItemRequest) Descriptor() ([]byte, []int) {
 	return file_nomos_v1_nomos_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *PingRequest) GetName() string {
+func (x *GetItemRequest) GetKey() string {
 	if x != nil {
-		return x.Name
+		return x.Key
 	}
 	return ""
 }
 
-type PingResponse struct {
+type GetItemResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Message       string                 `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+	Value         string                 `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *PingResponse) Reset() {
-	*x = PingResponse{}
+func (x *GetItemResponse) Reset() {
+	*x = GetItemResponse{}
 	mi := &file_nomos_v1_nomos_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *PingResponse) String() string {
+func (x *GetItemResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*PingResponse) ProtoMessage() {}
+func (*GetItemResponse) ProtoMessage() {}
 
-func (x *PingResponse) ProtoReflect() protoreflect.Message {
+func (x *GetItemResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_nomos_v1_nomos_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -97,29 +97,122 @@ func (x *PingResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use PingResponse.ProtoReflect.Descriptor instead.
-func (*PingResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetItemResponse.ProtoReflect.Descriptor instead.
+func (*GetItemResponse) Descriptor() ([]byte, []int) {
 	return file_nomos_v1_nomos_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *PingResponse) GetMessage() string {
+func (x *GetItemResponse) GetValue() string {
 	if x != nil {
-		return x.Message
+		return x.Value
 	}
 	return ""
+}
+
+type PutItemRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Key           string                 `protobuf:"bytes,1,opt,name=key,proto3" json:"key,omitempty"`
+	Value         string                 `protobuf:"bytes,2,opt,name=value,proto3" json:"value,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PutItemRequest) Reset() {
+	*x = PutItemRequest{}
+	mi := &file_nomos_v1_nomos_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PutItemRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PutItemRequest) ProtoMessage() {}
+
+func (x *PutItemRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nomos_v1_nomos_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PutItemRequest.ProtoReflect.Descriptor instead.
+func (*PutItemRequest) Descriptor() ([]byte, []int) {
+	return file_nomos_v1_nomos_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *PutItemRequest) GetKey() string {
+	if x != nil {
+		return x.Key
+	}
+	return ""
+}
+
+func (x *PutItemRequest) GetValue() string {
+	if x != nil {
+		return x.Value
+	}
+	return ""
+}
+
+type PutItemResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *PutItemResponse) Reset() {
+	*x = PutItemResponse{}
+	mi := &file_nomos_v1_nomos_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *PutItemResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*PutItemResponse) ProtoMessage() {}
+
+func (x *PutItemResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nomos_v1_nomos_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use PutItemResponse.ProtoReflect.Descriptor instead.
+func (*PutItemResponse) Descriptor() ([]byte, []int) {
+	return file_nomos_v1_nomos_proto_rawDescGZIP(), []int{3}
 }
 
 var File_nomos_v1_nomos_proto protoreflect.FileDescriptor
 
 const file_nomos_v1_nomos_proto_rawDesc = "" +
 	"\n" +
-	"\x14nomos/v1/nomos.proto\x12\bnomos.v1\"!\n" +
-	"\vPingRequest\x12\x12\n" +
-	"\x04name\x18\x01 \x01(\tR\x04name\"(\n" +
-	"\fPingResponse\x12\x18\n" +
-	"\amessage\x18\x01 \x01(\tR\amessage2G\n" +
-	"\fNomosService\x127\n" +
-	"\x04Ping\x12\x15.nomos.v1.PingRequest\x1a\x16.nomos.v1.PingResponse\"\x00B\x91\x01\n" +
+	"\x14nomos/v1/nomos.proto\x12\bnomos.v1\"\"\n" +
+	"\x0eGetItemRequest\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\"'\n" +
+	"\x0fGetItemResponse\x12\x14\n" +
+	"\x05value\x18\x01 \x01(\tR\x05value\"8\n" +
+	"\x0ePutItemRequest\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value\"\x11\n" +
+	"\x0fPutItemResponse2\x92\x01\n" +
+	"\fNomosService\x12@\n" +
+	"\aGetItem\x12\x18.nomos.v1.GetItemRequest\x1a\x19.nomos.v1.GetItemResponse\"\x00\x12@\n" +
+	"\aPutItem\x12\x18.nomos.v1.PutItemRequest\x1a\x19.nomos.v1.PutItemResponse\"\x00B\x91\x01\n" +
 	"\fcom.nomos.v1B\n" +
 	"NomosProtoP\x01Z4github.com/ryota-sakamoto/nomos/gen/nomos/v1;nomosv1\xa2\x02\x03NXX\xaa\x02\bNomos.V1\xca\x02\bNomos\\V1\xe2\x02\x14Nomos\\V1\\GPBMetadata\xea\x02\tNomos::V1b\x06proto3"
 
@@ -135,16 +228,20 @@ func file_nomos_v1_nomos_proto_rawDescGZIP() []byte {
 	return file_nomos_v1_nomos_proto_rawDescData
 }
 
-var file_nomos_v1_nomos_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_nomos_v1_nomos_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_nomos_v1_nomos_proto_goTypes = []any{
-	(*PingRequest)(nil),  // 0: nomos.v1.PingRequest
-	(*PingResponse)(nil), // 1: nomos.v1.PingResponse
+	(*GetItemRequest)(nil),  // 0: nomos.v1.GetItemRequest
+	(*GetItemResponse)(nil), // 1: nomos.v1.GetItemResponse
+	(*PutItemRequest)(nil),  // 2: nomos.v1.PutItemRequest
+	(*PutItemResponse)(nil), // 3: nomos.v1.PutItemResponse
 }
 var file_nomos_v1_nomos_proto_depIdxs = []int32{
-	0, // 0: nomos.v1.NomosService.Ping:input_type -> nomos.v1.PingRequest
-	1, // 1: nomos.v1.NomosService.Ping:output_type -> nomos.v1.PingResponse
-	1, // [1:2] is the sub-list for method output_type
-	0, // [0:1] is the sub-list for method input_type
+	0, // 0: nomos.v1.NomosService.GetItem:input_type -> nomos.v1.GetItemRequest
+	2, // 1: nomos.v1.NomosService.PutItem:input_type -> nomos.v1.PutItemRequest
+	1, // 2: nomos.v1.NomosService.GetItem:output_type -> nomos.v1.GetItemResponse
+	3, // 3: nomos.v1.NomosService.PutItem:output_type -> nomos.v1.PutItemResponse
+	2, // [2:4] is the sub-list for method output_type
+	0, // [0:2] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -161,7 +258,7 @@ func file_nomos_v1_nomos_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nomos_v1_nomos_proto_rawDesc), len(file_nomos_v1_nomos_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   2,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
