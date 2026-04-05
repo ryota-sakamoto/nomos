@@ -19,7 +19,12 @@ message PutItemRequest {
 
 message PutItemResponse {}
 
+message HealthzRequest {}
+
+message HealthzResponse {}
+
 service NomosService {
   rpc GetItem(GetItemRequest) returns (GetItemResponse) {}
   rpc PutItem(PutItemRequest) returns (PutItemResponse) {}
+  rpc Healthz(HealthzRequest) returns (HealthzResponse) {}
 }

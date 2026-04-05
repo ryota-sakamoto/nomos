@@ -37,12 +37,15 @@ const (
 	NomosServiceGetItemProcedure = "/nomos.v1.NomosService/GetItem"
 	// NomosServicePutItemProcedure is the fully-qualified name of the NomosService's PutItem RPC.
 	NomosServicePutItemProcedure = "/nomos.v1.NomosService/PutItem"
+	// NomosServiceHealthzProcedure is the fully-qualified name of the NomosService's Healthz RPC.
+	NomosServiceHealthzProcedure = "/nomos.v1.NomosService/Healthz"
 )
 
 // NomosServiceClient is a client for the nomos.v1.NomosService service.
 type NomosServiceClient interface {
 	GetItem(context.Context, *v1.GetItemRequest) (*v1.GetItemResponse, error)
 	PutItem(context.Context, *v1.PutItemRequest) (*v1.PutItemResponse, error)
+	Healthz(context.Context, *v1.HealthzRequest) (*v1.HealthzResponse, error)
 }
 
 // NewNomosServiceClient constructs a client for the nomos.v1.NomosService service. By default, it
@@ -68,6 +71,12 @@ func NewNomosServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 			connect.WithSchema(nomosServiceMethods.ByName("PutItem")),
 			connect.WithClientOptions(opts...),
 		),
+		healthz: connect.NewClient[v1.HealthzRequest, v1.HealthzResponse](
+			httpClient,
+			baseURL+NomosServiceHealthzProcedure,
+			connect.WithSchema(nomosServiceMethods.ByName("Healthz")),
+			connect.WithClientOptions(opts...),
+		),
 	}
 }
 
@@ -75,6 +84,7 @@ func NewNomosServiceClient(httpClient connect.HTTPClient, baseURL string, opts .
 type nomosServiceClient struct {
 	getItem *connect.Client[v1.GetItemRequest, v1.GetItemResponse]
 	putItem *connect.Client[v1.PutItemRequest, v1.PutItemResponse]
+	healthz *connect.Client[v1.HealthzRequest, v1.HealthzResponse]
 }
 
 // GetItem calls nomos.v1.NomosService.GetItem.
@@ -95,10 +105,20 @@ func (c *nomosServiceClient) PutItem(ctx context.Context, req *v1.PutItemRequest
 	return nil, err
 }
 
+// Healthz calls nomos.v1.NomosService.Healthz.
+func (c *nomosServiceClient) Healthz(ctx context.Context, req *v1.HealthzRequest) (*v1.HealthzResponse, error) {
+	response, err := c.healthz.CallUnary(ctx, connect.NewRequest(req))
+	if response != nil {
+		return response.Msg, err
+	}
+	return nil, err
+}
+
 // NomosServiceHandler is an implementation of the nomos.v1.NomosService service.
 type NomosServiceHandler interface {
 	GetItem(context.Context, *v1.GetItemRequest) (*v1.GetItemResponse, error)
 	PutItem(context.Context, *v1.PutItemRequest) (*v1.PutItemResponse, error)
+	Healthz(context.Context, *v1.HealthzRequest) (*v1.HealthzResponse, error)
 }
 
 // NewNomosServiceHandler builds an HTTP handler from the service implementation. It returns the
@@ -120,12 +140,20 @@ func NewNomosServiceHandler(svc NomosServiceHandler, opts ...connect.HandlerOpti
 		connect.WithSchema(nomosServiceMethods.ByName("PutItem")),
 		connect.WithHandlerOptions(opts...),
 	)
+	nomosServiceHealthzHandler := connect.NewUnaryHandlerSimple(
+		NomosServiceHealthzProcedure,
+		svc.Healthz,
+		connect.WithSchema(nomosServiceMethods.ByName("Healthz")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/nomos.v1.NomosService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case NomosServiceGetItemProcedure:
 			nomosServiceGetItemHandler.ServeHTTP(w, r)
 		case NomosServicePutItemProcedure:
 			nomosServicePutItemHandler.ServeHTTP(w, r)
+		case NomosServiceHealthzProcedure:
+			nomosServiceHealthzHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -141,4 +169,8 @@ func (UnimplementedNomosServiceHandler) GetItem(context.Context, *v1.GetItemRequ
 
 func (UnimplementedNomosServiceHandler) PutItem(context.Context, *v1.PutItemRequest) (*v1.PutItemResponse, error) {
 	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("nomos.v1.NomosService.PutItem is not implemented"))
+}
+
+func (UnimplementedNomosServiceHandler) Healthz(context.Context, *v1.HealthzRequest) (*v1.HealthzResponse, error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("nomos.v1.NomosService.Healthz is not implemented"))
 }

@@ -22,7 +22,7 @@ type Node struct {
 	mu   sync.Mutex
 }
 
-func Run(ctx context.Context) error {
+func CreateMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
 	validator := validate.NewInterceptor()
@@ -30,6 +30,11 @@ func Run(ctx context.Context) error {
 	path, handler := nomosv1connect.NewNomosServiceHandler(&Node{}, connect.WithInterceptors(validator))
 	mux.Handle(path, handler)
 
+	return mux
+}
+
+func Run(ctx context.Context) error {
+	mux := CreateMux()
 	server := &http.Server{
 		Addr:    "localhost:12345",
 		Handler: h2c.NewHandler(mux, &http2.Server{}),
@@ -55,4 +60,8 @@ func (n *Node) GetItem(ctx context.Context, req *nomosv1.GetItemRequest) (*nomos
 func (n *Node) PutItem(ctx context.Context, req *nomosv1.PutItemRequest) (*nomosv1.PutItemResponse, error) {
 	log.Println("receive PutItem", req)
 	return &nomosv1.PutItemResponse{}, nil
+}
+
+func (n *Node) Healthz(ctx context.Context, req *nomosv1.HealthzRequest) (*nomosv1.HealthzResponse, error) {
+	return &nomosv1.HealthzResponse{}, nil
 }

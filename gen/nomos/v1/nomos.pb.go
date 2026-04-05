@@ -198,6 +198,78 @@ func (*PutItemResponse) Descriptor() ([]byte, []int) {
 	return file_nomos_v1_nomos_proto_rawDescGZIP(), []int{3}
 }
 
+type HealthzRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HealthzRequest) Reset() {
+	*x = HealthzRequest{}
+	mi := &file_nomos_v1_nomos_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HealthzRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HealthzRequest) ProtoMessage() {}
+
+func (x *HealthzRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_nomos_v1_nomos_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HealthzRequest.ProtoReflect.Descriptor instead.
+func (*HealthzRequest) Descriptor() ([]byte, []int) {
+	return file_nomos_v1_nomos_proto_rawDescGZIP(), []int{4}
+}
+
+type HealthzResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *HealthzResponse) Reset() {
+	*x = HealthzResponse{}
+	mi := &file_nomos_v1_nomos_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *HealthzResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*HealthzResponse) ProtoMessage() {}
+
+func (x *HealthzResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_nomos_v1_nomos_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use HealthzResponse.ProtoReflect.Descriptor instead.
+func (*HealthzResponse) Descriptor() ([]byte, []int) {
+	return file_nomos_v1_nomos_proto_rawDescGZIP(), []int{5}
+}
+
 var File_nomos_v1_nomos_proto protoreflect.FileDescriptor
 
 const file_nomos_v1_nomos_proto_rawDesc = "" +
@@ -210,10 +282,13 @@ const file_nomos_v1_nomos_proto_rawDesc = "" +
 	"\x0ePutItemRequest\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value\"\x11\n" +
-	"\x0fPutItemResponse2\x92\x01\n" +
+	"\x0fPutItemResponse\"\x10\n" +
+	"\x0eHealthzRequest\"\x11\n" +
+	"\x0fHealthzResponse2\xd4\x01\n" +
 	"\fNomosService\x12@\n" +
 	"\aGetItem\x12\x18.nomos.v1.GetItemRequest\x1a\x19.nomos.v1.GetItemResponse\"\x00\x12@\n" +
-	"\aPutItem\x12\x18.nomos.v1.PutItemRequest\x1a\x19.nomos.v1.PutItemResponse\"\x00B\x91\x01\n" +
+	"\aPutItem\x12\x18.nomos.v1.PutItemRequest\x1a\x19.nomos.v1.PutItemResponse\"\x00\x12@\n" +
+	"\aHealthz\x12\x18.nomos.v1.HealthzRequest\x1a\x19.nomos.v1.HealthzResponse\"\x00B\x91\x01\n" +
 	"\fcom.nomos.v1B\n" +
 	"NomosProtoP\x01Z4github.com/ryota-sakamoto/nomos/gen/nomos/v1;nomosv1\xa2\x02\x03NXX\xaa\x02\bNomos.V1\xca\x02\bNomos\\V1\xe2\x02\x14Nomos\\V1\\GPBMetadata\xea\x02\tNomos::V1b\x06proto3"
 
@@ -229,20 +304,24 @@ func file_nomos_v1_nomos_proto_rawDescGZIP() []byte {
 	return file_nomos_v1_nomos_proto_rawDescData
 }
 
-var file_nomos_v1_nomos_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
+var file_nomos_v1_nomos_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_nomos_v1_nomos_proto_goTypes = []any{
 	(*GetItemRequest)(nil),  // 0: nomos.v1.GetItemRequest
 	(*GetItemResponse)(nil), // 1: nomos.v1.GetItemResponse
 	(*PutItemRequest)(nil),  // 2: nomos.v1.PutItemRequest
 	(*PutItemResponse)(nil), // 3: nomos.v1.PutItemResponse
+	(*HealthzRequest)(nil),  // 4: nomos.v1.HealthzRequest
+	(*HealthzResponse)(nil), // 5: nomos.v1.HealthzResponse
 }
 var file_nomos_v1_nomos_proto_depIdxs = []int32{
 	0, // 0: nomos.v1.NomosService.GetItem:input_type -> nomos.v1.GetItemRequest
 	2, // 1: nomos.v1.NomosService.PutItem:input_type -> nomos.v1.PutItemRequest
-	1, // 2: nomos.v1.NomosService.GetItem:output_type -> nomos.v1.GetItemResponse
-	3, // 3: nomos.v1.NomosService.PutItem:output_type -> nomos.v1.PutItemResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
+	4, // 2: nomos.v1.NomosService.Healthz:input_type -> nomos.v1.HealthzRequest
+	1, // 3: nomos.v1.NomosService.GetItem:output_type -> nomos.v1.GetItemResponse
+	3, // 4: nomos.v1.NomosService.PutItem:output_type -> nomos.v1.PutItemResponse
+	5, // 5: nomos.v1.NomosService.Healthz:output_type -> nomos.v1.HealthzResponse
+	3, // [3:6] is the sub-list for method output_type
+	0, // [0:3] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -259,7 +338,7 @@ func file_nomos_v1_nomos_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_nomos_v1_nomos_proto_rawDesc), len(file_nomos_v1_nomos_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   4,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
