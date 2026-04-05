@@ -18,8 +18,8 @@ import (
 )
 
 type Node struct {
-	data *map[string]any
-	mu   sync.Mutex
+	data map[string]any
+	mu   sync.RWMutex
 }
 
 func CreateMux() *http.ServeMux {
@@ -27,7 +27,10 @@ func CreateMux() *http.ServeMux {
 
 	validator := validate.NewInterceptor()
 
-	path, handler := nomosv1connect.NewNomosServiceHandler(&Node{}, connect.WithInterceptors(validator))
+	path, handler := nomosv1connect.NewNomosServiceHandler(&Node{
+		data: map[string]any{},
+		mu:   sync.RWMutex{},
+	}, connect.WithInterceptors(validator))
 	mux.Handle(path, handler)
 
 	return mux
@@ -54,11 +57,27 @@ func Run(ctx context.Context) error {
 
 func (n *Node) GetItem(ctx context.Context, req *nomosv1.GetItemRequest) (*nomosv1.GetItemResponse, error) {
 	log.Println("receive GetItem", req)
+
+	n.mu.RLock()
+	defer n.mu.RUnlock()
+
+	if item, ok := n.data[req.Key]; ok {
+		return &nomosv1.GetItemResponse{
+			Value: item.(string),
+		}, nil
+	}
+
 	return &nomosv1.GetItemResponse{}, connect.NewError(connect.CodeNotFound, fmt.Errorf("item is not found"))
 }
 
 func (n *Node) PutItem(ctx context.Context, req *nomosv1.PutItemRequest) (*nomosv1.PutItemResponse, error) {
 	log.Println("receive PutItem", req)
+
+	n.mu.Lock()
+	defer n.mu.Unlock()
+
+	n.data[req.Key] = req.Value
+
 	return &nomosv1.PutItemResponse{}, nil
 }
 
