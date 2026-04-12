@@ -50,6 +50,12 @@ func Run(ctx context.Context) error {
 		}
 	}()
 
+	go func() {
+		if err := Listen(ctx); err != nil {
+			panic(err)
+		}
+	}()
+
 	<-ctx.Done()
 	log.Println("shutting down")
 	return server.Shutdown(ctx)
